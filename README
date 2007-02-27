@@ -25,7 +25,8 @@ The code has been used mostly on 1.1.6 and it was tested against the edge rails.
 
 Install as any other Rails plugin:
 
-ruby script/plugin install svn://rubyforge.org/var/svn/enhanced-mgrtns
+ruby script/plugin install svn://rubyforge.org/var/svn/enhanced-mgrtns/enhanced_migrations
+
 
 === Usage
 
