@@ -90,16 +90,20 @@ ActiveRecord::SchemaDumper.send(:define_method, :tables) do |stream|
 end
 
 # For enhanced migrations schema define info does not do much since previous migrations are applied regardless of the current version
-class ActiveRecord::Schema
-  def self.define(info={}, &block)
-    instance_eval(&block)
+module ActiveRecord
+  class Schema < Migration
 
-    if info[:version]
-      initialize_schema_information
-      if Base.connection.select_one("SELECT id FROM #{ActiveRecord::Migrator.schema_info_table_name} WHERE id = #{info[:version]}") == nil
-        Base.connection.execute("INSERT INTO #{ActiveRecord::Migrator.schema_info_table_name} VALUES(#{info[:version]}, NOW())")
+    def self.define(info={}, &block)
+      instance_eval(&block)
+
+      if info[:version]
+        initialize_schema_information
+        if Base.connection.select_one("SELECT id FROM #{ActiveRecord::Migrator.schema_info_table_name} WHERE id = #{info[:version]}") == nil
+          Base.connection.execute("INSERT INTO #{ActiveRecord::Migrator.schema_info_table_name} VALUES(#{info[:version]}, NOW())")
+        end
       end
     end
+
   end
 end
   
