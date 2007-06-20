@@ -14,7 +14,7 @@ class Migrator
   end
   
   def self.current_version
-    ActiveRecord::Base.connection.select_one("SELECT MAX(id) FROM #{schema_info_table_name}")["MAX(id)"].to_i rescue 0
+    ActiveRecord::Base.connection.select_one("SELECT MAX(id) as max FROM #{schema_info_table_name}")["max"].to_i rescue 0
   end
   
   def self.schema_info_table_name
@@ -71,7 +71,7 @@ ActiveRecord::ConnectionAdapters::SchemaStatements.send(:public, :dump_schema_in
 ActiveRecord::SchemaDumper.send(:define_method, :initialize) do |connection|
   @connection = connection
   @types = @connection.native_database_types
-  @info = {'version' => @connection.select_one("SELECT MAX(id) FROM migrations_info")["MAX(id)"]} rescue nil
+  @info = {'version' => @connection.select_one("SELECT MAX(id) as max FROM migrations_info")["max"]} rescue nil
 end
 
 
